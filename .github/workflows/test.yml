@@ -1,0 +1,26 @@
+name: "Test"
+
+on: [push]
+
+jobs:
+
+  test:
+
+    name: Test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install Apptainer
+        shell: bash
+        run: |
+          wget https://github.com/apptainer/apptainer/releases/download/v1.0.3/apptainer_1.0.3_amd64.deb
+          sudo apt-get -y install ./apptainer_1.0.3_amd64.deb
+
+      - name: Get container image
+        shell: bash
+        run: |
+          apptainer pull CentOS7.sif library://centos:7
